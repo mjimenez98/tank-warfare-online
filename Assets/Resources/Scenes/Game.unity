@@ -275,6 +275,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1051702444}
     m_Modifications:
+    - target: {fileID: -3920550591045272548, guid: f4bcc3cd679a34d949852397c612e3d6,
+        type: 3}
+      propertyPath: isAvailable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3761975090318274446, guid: f4bcc3cd679a34d949852397c612e3d6,
+        type: 3}
+      propertyPath: viewIdField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 264408368617931576, guid: f4bcc3cd679a34d949852397c612e3d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1666,6 +1676,7 @@ GameObject:
   m_Component:
   - component: {fileID: 478812831}
   - component: {fileID: 478812830}
+  - component: {fileID: 478812832}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1687,6 +1698,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1755948686814516729, guid: f9611adb0271741559df574a2f23d510,
     type: 3}
+  spawnPrefab: {fileID: 2480413606531054264, guid: f4bcc3cd679a34d949852397c612e3d6,
+    type: 3}
 --- !u!4 &478812831
 Transform:
   m_ObjectHideFlags: 0
@@ -1701,6 +1714,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &478812832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478812829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &485378381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3699,7 +3733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1051702444
 Transform:
   m_ObjectHideFlags: 0
@@ -7225,6 +7259,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1051702444}
     m_Modifications:
+    - target: {fileID: -3920550591045272548, guid: f4bcc3cd679a34d949852397c612e3d6,
+        type: 3}
+      propertyPath: isAvailable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3761975090318274446, guid: f4bcc3cd679a34d949852397c612e3d6,
+        type: 3}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 264408368617931576, guid: f4bcc3cd679a34d949852397c612e3d6,
         type: 3}
       propertyPath: m_LocalPosition.x

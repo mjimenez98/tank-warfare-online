@@ -1,30 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Spawn : MonoBehaviour
+namespace Com.TankWarfareOnline
 {
-    private Vector3 position;
-    private bool isAvailable;
-
-    private void Awake()
+    public class Spawn : MonoBehaviourPunCallbacks, IPunObservable
     {
-        position = transform.position;
-        isAvailable = true;
-    }
+        private Vector3 position;
+        public bool isAvailable;
 
-    public Vector3 GetPosition()
-    {
-        return position;
-    }
+        #region Methods
 
-    public void SetIsAvailable(bool available)
-    {
-        isAvailable = available;
-    }
+        void Awake()
+        {
+            if (!photonView.IsMine)
+                return;
 
-    public bool GetIsAvailable()
-    {
-        return isAvailable;
+            DontDestroyOnLoad(this.gameObject);
+
+            position = transform.position;
+            isAvailable = true;
+        }
+
+        public Vector3 GetPosition()
+        {
+            return position;
+        }
+
+        public void SetIsAvailable(bool available)
+        {
+            isAvailable = available;
+        }
+
+        public bool GetIsAvailable()
+        {
+            return isAvailable;
+        }
+
+
+        #endregion
+
+
+        #region IPunObservable implementation
+
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                Debug.Log("Updating Spawn");
+
+                // We own this player: send the others our data
+                stream.SendNext(isAvailable);
+            }
+            else
+            {
+                Debug.Log("Reading Spawn");
+
+                // Network player, receive data
+                this.isAvailable = (bool)stream.ReceiveNext();
+            }
+        }
+
+
+        #endregion
     }
 }

@@ -38,15 +38,14 @@ namespace Com.TankWarfareOnline
             // Get the horizontal and vertical axis.
             // By default they are mapped to the arrow keys.
             // The value is in the range -1 to 1
-            float translationX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
             float translationZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-            //float rotation = Input.GetAxis("Horizontal") * rotationSpeed;
+            float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
 
             // Move translation along the object's z-axis
-            transform.Translate(translationX, 0, translationZ);
+            transform.Translate(0, 0, translationZ);
 
             // Rotate around our y-axis
-            //transform.Rotate(0, rotation, 0);
+            transform.Rotate(0, rotation, 0);
         }
     }
 }

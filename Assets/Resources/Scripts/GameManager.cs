@@ -12,7 +12,7 @@ namespace Com.TankWarfareOnline
         #region Variables
 
         public GameObject playerPrefab;
-        private Spawn[] spawns;
+        public GameObject spawnPrefab;
 
         #endregion
 
@@ -49,8 +49,6 @@ namespace Com.TankWarfareOnline
 
         private void Start()
         {
-            spawns = FindObjectsOfType<Spawn>();
-
             if (playerPrefab == null)
             {
                 Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab " +
@@ -58,34 +56,52 @@ namespace Com.TankWarfareOnline
             }
             else
             {
-                //Spawn spawn = GetAvailableSpawn();
-
-                //if (spawn == null)
-                //    Debug.LogError("No spawns available for new player");
-                //else
-                //{
-
                 if (PlayerManager.LocalPlayerInstance == null)
                 {
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        Debug.Log("Creating Spawns");
+
+                        PhotonNetwork.Instantiate(
+                                        "Prefabs/" + spawnPrefab.name,
+                                        new Vector3(-40, 0, -40),
+                                        Quaternion.identity,
+                                        0);
+
+                        PhotonNetwork.Instantiate(
+                                        "Prefabs/" + spawnPrefab.name,
+                                        new Vector3(-40, 0, 40),
+                                        Quaternion.identity,
+                                        0);
+                    }
+
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}",
                         SceneManager.GetActiveScene().name);
 
-                    // We're in a room. spawn a character for the local player.
-                    // It gets synced by using PhotonNetwork.Instantiate
-                    PhotonNetwork.Instantiate(
-                        "Prefabs/" + playerPrefab.name,
-                        new Vector3(0.0f, 0.0f, 0.0f),
-                        Quaternion.identity,
-                        0);
-                }
+                    Spawn spawn = GetAvailableSpawn();
 
-                    //spawn.SetIsAvailable(false);
-                //}
+                    if (spawn == null)
+                        Debug.LogError("Spawn not available");
+                    else
+                    {
+                        // We're in a room. spawn a character for the local player.
+                        // It gets synced by using PhotonNetwork.Instantiate
+                        PhotonNetwork.Instantiate(
+                            "Prefabs/" + playerPrefab.name,
+                            spawn.transform.position,
+                            Quaternion.identity,
+                            0);
+
+                        spawn.SetIsAvailable(false);
+                    }
+                }
             }
         }
 
         private Spawn GetAvailableSpawn()
         {
+            Spawn[] spawns = FindObjectsOfType<Spawn>();
+
             foreach(Spawn spawn in spawns)
             {
                 if (spawn.GetIsAvailable())
