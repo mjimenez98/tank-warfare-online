@@ -14,6 +14,8 @@ namespace Com.TankWarfareOnline
         public GameObject playerPrefab;
         public GameObject spawnPrefab;
 
+        private bool playerHasSpawned;
+
         #endregion
 
 
@@ -49,51 +51,25 @@ namespace Com.TankWarfareOnline
 
         private void Start()
         {
-            if (playerPrefab == null)
+            playerHasSpawned = false;
+
+            if (PlayerManager.LocalPlayerInstance == null)
             {
-                Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab " +
-                    "Reference. Please set it up in GameObject 'Game Manager'", this);
-            }
-            else
-            {
-                if (PlayerManager.LocalPlayerInstance == null)
+                if (PhotonNetwork.IsMasterClient)
                 {
-                    if (PhotonNetwork.IsMasterClient)
-                    {
-                        Debug.Log("Creating Spawns");
+                    Debug.Log("Creating Spawns");
 
-                        PhotonNetwork.Instantiate(
-                                        "Prefabs/" + spawnPrefab.name,
-                                        new Vector3(-40, 0, -40),
-                                        Quaternion.identity,
-                                        0);
+                    PhotonNetwork.Instantiate(
+                                    "Prefabs/" + spawnPrefab.name,
+                                    new Vector3(-40, 0, -40),
+                                    Quaternion.identity,
+                                    0);
 
-                        PhotonNetwork.Instantiate(
-                                        "Prefabs/" + spawnPrefab.name,
-                                        new Vector3(-40, 0, 40),
-                                        Quaternion.identity,
-                                        0);
-                    }
-
-                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}",
-                        SceneManager.GetActiveScene().name);
-
-                    Spawn spawn = GetAvailableSpawn();
-
-                    if (spawn == null)
-                        Debug.LogError("Spawn not available");
-                    else
-                    {
-                        // We're in a room. spawn a character for the local player.
-                        // It gets synced by using PhotonNetwork.Instantiate
-                        PhotonNetwork.Instantiate(
-                            "Prefabs/" + playerPrefab.name,
-                            spawn.transform.position,
-                            Quaternion.identity,
-                            0);
-
-                        spawn.SetIsAvailable(false);
-                    }
+                    PhotonNetwork.Instantiate(
+                                    "Prefabs/" + spawnPrefab.name,
+                                    new Vector3(-40, 0, 40),
+                                    Quaternion.identity,
+                                    0);
                 }
             }
         }
@@ -109,6 +85,42 @@ namespace Com.TankWarfareOnline
             }
 
             return null;
+        }
+
+        private void Update()
+        {
+            if (playerPrefab == null)
+            {
+                Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab " +
+                    "Reference. Please set it up in GameObject 'Game Manager'", this);
+            }
+            else
+            {
+                if (!playerHasSpawned && PlayerManager.LocalPlayerInstance == null)
+                {
+                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}",
+                        SceneManager.GetActiveScene().name);
+
+                    Spawn spawn = GetAvailableSpawn();
+
+                    if (spawn == null)
+                        Debug.Log("Spawn not available");
+                    else
+                    {
+                        // We're in a room. spawn a character for the local player.
+                        // It gets synced by using PhotonNetwork.Instantiate
+                        PhotonNetwork.Instantiate(
+                            "Prefabs/" + playerPrefab.name,
+                            spawn.transform.position,
+                            Quaternion.identity,
+                            0);
+
+
+                        spawn.SetIsAvailable(false);
+                        playerHasSpawned = true;
+                    }
+                }
+            }
         }
 
         void LoadArena()
