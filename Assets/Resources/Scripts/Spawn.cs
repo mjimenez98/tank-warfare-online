@@ -7,21 +7,18 @@ namespace Com.TankWarfareOnline
 {
     public class Spawn : MonoBehaviourPunCallbacks, IPunObservable
     {
+        #region Properties
+
+
         private Vector3 position;
         public bool isAvailable;
 
-        #region Methods
 
-        void Awake()
-        {
-            if (!photonView.IsMine)
-                return;
+        #endregion
 
-            DontDestroyOnLoad(this.gameObject);
 
-            position = transform.position;
-            isAvailable = true;
-        }
+        #region Public Methods
+
 
         public Vector3 GetPosition()
         {
@@ -36,6 +33,24 @@ namespace Com.TankWarfareOnline
         public bool GetIsAvailable()
         {
             return isAvailable;
+        }
+
+
+        #endregion
+
+
+        #region Private Methods
+
+
+        void Awake()
+        {
+            if (!photonView.IsMine)
+                return;
+
+            DontDestroyOnLoad(this.gameObject);
+
+            position = transform.position;
+            isAvailable = true;
         }
 
 

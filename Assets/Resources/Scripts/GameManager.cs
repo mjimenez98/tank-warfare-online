@@ -9,12 +9,14 @@ namespace Com.TankWarfareOnline
 {
     public class GameManager : MonoBehaviourPunCallbacks
     {
-        #region Variables
+        #region Properties
+
 
         public GameObject playerPrefab;
         public GameObject spawnPrefab;
 
         private bool playerHasSpawned;
+
 
         #endregion
 
