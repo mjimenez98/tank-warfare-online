@@ -7,15 +7,6 @@ namespace Com.TankWarfareOnline
 {
     public class Powerup : MonoBehaviourPunCallbacks
     {
-        #region Properties
-
-
-        public float timer;
-
-
-        #endregion
-
-
         #region MonoBehaviour Callbacks
 
 
@@ -32,26 +23,12 @@ namespace Com.TankWarfareOnline
             if (!photonView.IsMine)
                 return;
 
-            Debug.Log("COLLISION");
-
             if (collision.gameObject.GetComponentInParent<PlayerManager>() != null)
             {
                 Debug.Log("Collision with Player. Destroying Power-up");
 
                 PhotonNetwork.Destroy(this.gameObject);
             }
-        }
-
-
-        #endregion
-
-
-        #region Protected Methods
-
-
-        protected float GetTimer()
-        {
-            return timer;
         }
 
 

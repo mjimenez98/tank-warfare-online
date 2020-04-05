@@ -17,6 +17,15 @@ namespace Com.TankWarfareOnline
         public float speed;
         public float rotationSpeed;
 
+        private enum PlayerPowerups { Lightweight, Invincibility, None }
+        private PlayerPowerups powerupInPossession = PlayerPowerups.None;
+
+        [Tooltip("Speed multiplier determined by power-ups and external events")]
+        private float speedMultiplier = 1.0f;
+
+        [Tooltip("Indicates for how longer the power-up will be active")]
+        private float powerupTimer = 0.0f;
+
 
         #endregion
 
@@ -45,17 +54,52 @@ namespace Com.TankWarfareOnline
             if (!photonView.IsMine)
                 return;
 
+            if (powerupInPossession != PlayerPowerups.None)
+            {
+                powerupTimer -= Time.deltaTime;
+
+                if (powerupTimer < 0.0f)
+                {
+                    Debug.Log(gameObject.name + " has lost power-up");
+
+                    powerupInPossession = PlayerPowerups.None;
+                    speedMultiplier = 1.0f;
+                    powerupTimer = 0.0f;
+                }
+            }
+
             // Get the horizontal and vertical axis.
             // By default they are mapped to the arrow keys.
             // The value is in the range -1 to 1
-            float translationZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-            float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+            float translationZ = Input.GetAxis("Vertical") * speed * speedMultiplier *
+                Time.deltaTime;
+            float rotation = Input.GetAxis("Horizontal") * rotationSpeed * speedMultiplier *
+                Time.deltaTime;
 
             // Move translation along the object's z-axis
             transform.Translate(0, 0, translationZ);
 
             // Rotate around our y-axis
             transform.Rotate(0, rotation, 0);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!photonView.IsMine)
+                return;
+
+            if (collision.gameObject.name.Contains("Lightweight"))
+            {
+                Debug.Log(gameObject.name + " has acquired Lightweight");
+
+                powerupInPossession = PlayerPowerups.Lightweight;
+                speedMultiplier = Lightweight.GetSpeedMultiplier();
+                powerupTimer = Lightweight.GetTimer();
+            }
+            else if (collision.gameObject.name.Contains("Invincibility"))
+            {
+
+            }
         }
 
 
