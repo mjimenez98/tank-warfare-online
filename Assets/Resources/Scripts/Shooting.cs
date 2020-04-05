@@ -14,6 +14,9 @@ namespace Com.TankWarfareOnline
         public GameObject cylinder;
 
 
+        public AudioSource cannonSFX;
+
+
         #endregion
 
 
@@ -34,8 +37,19 @@ namespace Com.TankWarfareOnline
                     "Prefabs/" + bulletPrefab.name,
                     cylinder.transform.position,
                     transform.rotation);
+
+                photonView.RPC("PlayCannonSFX", RpcTarget.All);
             }
         }
+
+        [PunRPC]
+        void PlayCannonSFX()
+        {
+            Debug.Log("Playing cannon shot SFX");
+
+            cannonSFX.Play();
+        }
+
 
         #endregion
     }

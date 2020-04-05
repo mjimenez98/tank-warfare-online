@@ -7,6 +7,9 @@ namespace Com.TankWarfareOnline
 {
     public class Wall : MonoBehaviourPun
     {
+        #region Private Methods
+
+
         void Awake()
         {
             if (!photonView.IsMine)
@@ -27,5 +30,8 @@ namespace Com.TankWarfareOnline
                 PhotonNetwork.Destroy(this.gameObject);
             }
         }
+
+
+        #endregion
     }
 }
