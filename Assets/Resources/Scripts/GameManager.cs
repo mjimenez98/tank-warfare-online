@@ -14,6 +14,7 @@ namespace Com.TankWarfareOnline
 
         public GameObject playerPrefab;
         public GameObject spawnPrefab;
+        public GameObject wallPrefab;
 
         private bool playerHasSpawned;
 
@@ -21,73 +22,8 @@ namespace Com.TankWarfareOnline
         #endregion
 
 
-        #region Photon Callbacks
+        #region MonoBehaviour Callbacks
 
-
-        /// <summary>
-        /// Called when the local player left the room. We need to load the launcher scene.
-        /// </summary>
-        public override void OnLeftRoom()
-        {
-            SceneManager.LoadScene(0);
-        }
-
-
-        #endregion
-
-
-        #region Public Methods
-
-
-        public void LeaveRoom()
-        {
-            PhotonNetwork.LeaveRoom();
-        }
-
-
-        #endregion
-
-
-        #region Private Methods
-
-
-        private void Start()
-        {
-            playerHasSpawned = false;
-
-            if (PlayerManager.LocalPlayerInstance == null)
-            {
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    Debug.Log("Creating Spawns");
-
-                    PhotonNetwork.Instantiate(
-                                    "Prefabs/" + spawnPrefab.name,
-                                    new Vector3(-40, 0, -40),
-                                    Quaternion.identity,
-                                    0);
-
-                    PhotonNetwork.Instantiate(
-                                    "Prefabs/" + spawnPrefab.name,
-                                    new Vector3(-40, 0, 40),
-                                    Quaternion.identity,
-                                    0);
-                }
-            }
-        }
-
-        private Spawn GetAvailableSpawn()
-        {
-            Spawn[] spawns = FindObjectsOfType<Spawn>();
-
-            foreach(Spawn spawn in spawns)
-            {
-                if (spawn.GetIsAvailable())
-                    return spawn;
-            }
-
-            return null;
-        }
 
         private void Update()
         {
@@ -125,29 +61,26 @@ namespace Com.TankWarfareOnline
             }
         }
 
-        void LoadArena()
-        {
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                Debug.LogError("PhotonNetwork : Trying to Load a level but we " +
-                    "are not the master Client");
-            }
-
-            Debug.Log("PhotonNetwork : Loading Level");
-            PhotonNetwork.LoadLevel("Game");
-        }
-
 
         #endregion
 
 
-        #region Photon Callbacks
+        #region MonoBehaviourPunCallbacks Callbacks
+
+
+        /// <summary>
+        /// Called when the local player left the room. We need to load the launcher scene.
+        /// </summary>
+        public override void OnLeftRoom()
+        {
+            SceneManager.LoadScene(0);
+        }
 
 
         public override void OnPlayerEnteredRoom(Player other)
         {
             // Not seen if you're the player connecting
-            Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); 
+            Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName);
 
 
             if (PhotonNetwork.IsMasterClient)
@@ -164,7 +97,7 @@ namespace Com.TankWarfareOnline
         public override void OnPlayerLeftRoom(Player other)
         {
             // Seen when other disconnects
-            Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); 
+            Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName);
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -174,6 +107,97 @@ namespace Com.TankWarfareOnline
 
                 LoadArena();
             }
+        }
+
+
+        #endregion
+
+
+        #region Public Methods
+
+
+        public void LeaveRoom()
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+
+
+        #endregion
+
+
+        #region Private Methods
+
+
+        private void Start()
+        {
+            playerHasSpawned = false;
+
+            if (PlayerManager.LocalPlayerInstance == null)
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    CreateSpawns();
+
+                    CreateWalls();
+                }
+            }
+        }
+
+        private void CreateSpawns()
+        {
+            Debug.Log("Creating Spawns");
+
+            PhotonNetwork.Instantiate(
+                            "Prefabs/" + spawnPrefab.name,
+                            new Vector3(-40, 0, -40),
+                            Quaternion.identity,
+                            0);
+
+            PhotonNetwork.Instantiate(
+                            "Prefabs/" + spawnPrefab.name,
+                            new Vector3(-40, 0, 40),
+                            Quaternion.identity,
+                            0);
+        }
+
+        private void CreateWalls()
+        {
+            Debug.Log("Creating Walls");
+
+            Wall[] walls = Resources.FindObjectsOfTypeAll(typeof(Wall)) as Wall[];
+
+            foreach(Wall wall in walls)
+            {
+                PhotonNetwork.InstantiateSceneObject(
+                    "Prefabs/" + wallPrefab.name,
+                    wall.transform.localPosition,
+                    wall.transform.rotation);
+            }
+        }
+
+        private Spawn GetAvailableSpawn()
+        {
+            Spawn[] spawns = FindObjectsOfType<Spawn>();
+
+            foreach(Spawn spawn in spawns)
+            {
+                if (spawn.GetIsAvailable())
+                    return spawn;
+            }
+
+            return null;
+        }
+
+        void LoadArena()
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                Debug.LogError("PhotonNetwork : Trying to Load a level but we " +
+                    "are not the master Client");
+            }
+
+            Debug.Log("PhotonNetwork : Loading Level");
+            PhotonNetwork.LoadLevel("Game");
         }
 
 

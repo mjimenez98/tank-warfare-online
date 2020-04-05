@@ -14,10 +14,13 @@ namespace Com.TankWarfareOnline
         public GameObject cylinder;
 
 
+        public AudioSource cannonSFX;
+
+
         #endregion
 
 
-        #region Private Methods
+        #region MonoBehaviour Callbacks
 
 
         // Update is called once per frame
@@ -34,10 +37,30 @@ namespace Com.TankWarfareOnline
                     "Prefabs/" + bulletPrefab.name,
                     cylinder.transform.position,
                     transform.rotation);
+
+                photonView.RPC("PlayCannonSFX", RpcTarget.All);
             }
         }
 
+
         #endregion
+
+
+        #region RPCs
+
+
+        [PunRPC]
+        void PlayCannonSFX()
+        {
+            Debug.Log("Playing cannon shot SFX");
+
+            cannonSFX.Play();
+        }
+
+
+        #endregion
+
+
     }
 
 }

@@ -7,12 +7,22 @@ namespace Com.TankWarfareOnline
 {
     public class PlayerManager : MonoBehaviourPunCallbacks
     {
+        #region Properties
+
+
         [Tooltip("The local player instance. Use this to know if the local " +
             "player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
 
         public float speed;
         public float rotationSpeed;
+
+
+        #endregion
+
+
+        #region MonoBehaviour Callbacks
+
 
         private void Start()
         {
@@ -47,5 +57,8 @@ namespace Com.TankWarfareOnline
             // Rotate around our y-axis
             transform.Rotate(0, rotation, 0);
         }
+
+
+        #endregion
     }
 }

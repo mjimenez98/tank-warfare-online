@@ -38,10 +38,10 @@ namespace Com.TankWarfareOnline
 
         private void OnCollisionEnter(Collision collision)
         {
-            // Destroy if hits an object
             if (!photonView.IsMine)
                 return;
 
+            //Destroy if hits an object
             PhotonNetwork.Destroy(gameObject);
         }
 
