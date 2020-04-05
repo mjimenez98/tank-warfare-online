@@ -13,6 +13,8 @@ namespace Com.TankWarfareOnline
 
 
         public GameObject playerPrefab;
+        public GameObject powerUpLightweightPrefab;
+        public GameObject powerUpInvincibilityPrefab;
         public GameObject spawnPrefab;
         public GameObject wallPrefab;
 
@@ -39,7 +41,7 @@ namespace Com.TankWarfareOnline
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}",
                         SceneManager.GetActiveScene().name);
 
-                    Spawn spawn = GetAvailableSpawn();
+                    Spawn spawn = GetAvailableSpawns();
 
                     if (spawn == null)
                         Debug.Log("Spawn not available");
@@ -136,9 +138,11 @@ namespace Com.TankWarfareOnline
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    CreateSpawns();
-
                     CreateWalls();
+
+                    CreatePowerUps();
+
+                    CreateSpawns();
                 }
             }
         }
@@ -166,7 +170,7 @@ namespace Com.TankWarfareOnline
 
             Wall[] walls = Resources.FindObjectsOfTypeAll(typeof(Wall)) as Wall[];
 
-            foreach(Wall wall in walls)
+            foreach (Wall wall in walls)
             {
                 PhotonNetwork.InstantiateSceneObject(
                     "Prefabs/" + wallPrefab.name,
@@ -175,7 +179,41 @@ namespace Com.TankWarfareOnline
             }
         }
 
-        private Spawn GetAvailableSpawn()
+        private void CreatePowerUps()
+        {
+            Debug.Log("Creating Power-ups");
+
+            Lightweight[] lightweights = Resources.FindObjectsOfTypeAll(typeof(Lightweight)) as Lightweight[];
+            Invincibility[] invincibilities = Resources.FindObjectsOfTypeAll(typeof(Invincibility)) as Invincibility[];
+
+            foreach (Lightweight lightweight in lightweights)
+            {
+                if (lightweight.transform.position == new Vector3(0.0f, 0.0f, 0.0f))
+                    continue;
+
+                //Debug.Log("Creating Lightweight power-up");
+
+                PhotonNetwork.InstantiateSceneObject(
+                    "Prefabs/Power-ups/" + powerUpLightweightPrefab.name,
+                    lightweight.transform.localPosition,
+                    lightweight.transform.rotation);
+            }
+
+            foreach (Invincibility invincibility in invincibilities)
+            {
+                if (invincibility.transform.position == new Vector3(0.0f, 0.0f, 0.0f))
+                    continue;
+
+                //Debug.Log("Creating Invincibility power-up");
+
+                PhotonNetwork.InstantiateSceneObject(
+                    "Prefabs/Power-ups/" + powerUpInvincibilityPrefab.name,
+                    invincibility.transform.localPosition,
+                    invincibility.transform.rotation);
+            }
+        }
+
+        private Spawn GetAvailableSpawns()
         {
             Spawn[] spawns = FindObjectsOfType<Spawn>();
 
