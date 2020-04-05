@@ -64,14 +64,14 @@ namespace Com.TankWarfareOnline
         {
             if (stream.IsWriting)
             {
-                Debug.Log("Updating Spawn");
+                //Debug.Log("Updating Spawn");
 
                 // We own this player: send the others our data
                 stream.SendNext(isAvailable);
             }
             else
             {
-                Debug.Log("Reading Spawn");
+                //Debug.Log("Reading Spawn");
 
                 // Network player, receive data
                 this.isAvailable = (bool)stream.ReceiveNext();

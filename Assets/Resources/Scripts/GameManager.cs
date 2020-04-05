@@ -14,6 +14,7 @@ namespace Com.TankWarfareOnline
 
         public GameObject playerPrefab;
         public GameObject spawnPrefab;
+        public GameObject wallPrefab;
 
         private bool playerHasSpawned;
 
@@ -59,20 +60,42 @@ namespace Com.TankWarfareOnline
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    Debug.Log("Creating Spawns");
+                    CreateSpawns();
 
-                    PhotonNetwork.Instantiate(
-                                    "Prefabs/" + spawnPrefab.name,
-                                    new Vector3(-40, 0, -40),
-                                    Quaternion.identity,
-                                    0);
-
-                    PhotonNetwork.Instantiate(
-                                    "Prefabs/" + spawnPrefab.name,
-                                    new Vector3(-40, 0, 40),
-                                    Quaternion.identity,
-                                    0);
+                    CreateWalls();
                 }
+            }
+        }
+
+        private void CreateSpawns()
+        {
+            Debug.Log("Creating Spawns");
+
+            PhotonNetwork.Instantiate(
+                            "Prefabs/" + spawnPrefab.name,
+                            new Vector3(-40, 0, -40),
+                            Quaternion.identity,
+                            0);
+
+            PhotonNetwork.Instantiate(
+                            "Prefabs/" + spawnPrefab.name,
+                            new Vector3(-40, 0, 40),
+                            Quaternion.identity,
+                            0);
+        }
+
+        private void CreateWalls()
+        {
+            Debug.Log("Creating Walls");
+
+            Wall[] walls = Resources.FindObjectsOfTypeAll(typeof(Wall)) as Wall[];
+
+            foreach(Wall wall in walls)
+            {
+                PhotonNetwork.InstantiateSceneObject(
+                    "Prefabs/" + wallPrefab.name,
+                    wall.transform.localPosition,
+                    wall.transform.rotation);
             }
         }
 
