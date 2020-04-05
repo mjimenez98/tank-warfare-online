@@ -16,7 +16,7 @@ namespace Com.TankWarfareOnline
         #endregion
 
 
-        #region Protected Methods
+        #region MonoBehaviour Callbacks
 
 
         protected void Awake()
@@ -26,6 +26,28 @@ namespace Com.TankWarfareOnline
 
             DontDestroyOnLoad(this.gameObject);
         }
+
+        protected void OnCollisionEnter(Collision collision)
+        {
+            if (!photonView.IsMine)
+                return;
+
+            Debug.Log("COLLISION");
+
+            if (collision.gameObject.GetComponentInParent<PlayerManager>() != null)
+            {
+                Debug.Log("Collision with Player. Destroying Power-up");
+
+                PhotonNetwork.Destroy(this.gameObject);
+            }
+        }
+
+
+        #endregion
+
+
+        #region Protected Methods
+
 
         protected float GetTimer()
         {

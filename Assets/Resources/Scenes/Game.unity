@@ -734,6 +734,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lightweight
       objectReference: {fileID: 0}
+    - target: {fileID: 4311823050844469188, guid: 868b1612fc82c4e10978f1765545af15,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 868b1612fc82c4e10978f1765545af15, type: 3}
 --- !u!4 &301041500 stripped
@@ -3834,6 +3839,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lightweight
       objectReference: {fileID: 0}
+    - target: {fileID: 4311823050844469188, guid: 868b1612fc82c4e10978f1765545af15,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 868b1612fc82c4e10978f1765545af15, type: 3}
 --- !u!4 &979363514 stripped
@@ -4353,6 +4363,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Invincibility
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311823050844469188, guid: 0bbceeff0653744ebae9358f639bc4d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bbceeff0653744ebae9358f639bc4d5, type: 3}
@@ -7441,6 +7456,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Invincibility
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311823050844469188, guid: 0bbceeff0653744ebae9358f639bc4d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bbceeff0653744ebae9358f639bc4d5, type: 3}

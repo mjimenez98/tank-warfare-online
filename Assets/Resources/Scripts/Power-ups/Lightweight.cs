@@ -6,12 +6,17 @@ namespace Com.TankWarfareOnline
 {
     public class Lightweight : Powerup
     {
-        #region Private Methods
+        #region MonoBehaviour Callbacks
 
 
         private new void Awake()
         {
             base.Awake();
+        }
+
+        private new void OnCollisionEnter(Collision collision)
+        {
+            base.OnCollisionEnter(collision);
         }
 
 
