@@ -7,7 +7,7 @@ namespace Com.TankWarfareOnline
 {
     public class Wall : MonoBehaviourPun
     {
-        #region Private Methods
+        #region MonoBehaviour Callbacks
 
 
         void Awake()

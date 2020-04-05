@@ -17,6 +17,24 @@ namespace Com.TankWarfareOnline
         #endregion
 
 
+        #region MonoBehaviour Callbacks
+
+
+        void Awake()
+        {
+            if (!photonView.IsMine)
+                return;
+
+            DontDestroyOnLoad(this.gameObject);
+
+            position = transform.position;
+            isAvailable = true;
+        }
+
+
+        #endregion
+
+
         #region Public Methods
 
 
@@ -33,24 +51,6 @@ namespace Com.TankWarfareOnline
         public bool GetIsAvailable()
         {
             return isAvailable;
-        }
-
-
-        #endregion
-
-
-        #region Private Methods
-
-
-        void Awake()
-        {
-            if (!photonView.IsMine)
-                return;
-
-            DontDestroyOnLoad(this.gameObject);
-
-            position = transform.position;
-            isAvailable = true;
         }
 
 

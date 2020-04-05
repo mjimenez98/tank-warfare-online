@@ -6,7 +6,7 @@ namespace Com.TankWarfareOnline
 {
     public class Launcher : MonoBehaviourPunCallbacks
     {
-        #region Variables
+        #region Properties
 
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Com.TankWarfareOnline
         #endregion
 
 
-        #region MonoBehaviour CallBacks
+        #region MonoBehaviour Callbacks
 
 
         /// <summary>

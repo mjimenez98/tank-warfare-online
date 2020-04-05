@@ -22,7 +22,50 @@ namespace Com.TankWarfareOnline
         #endregion
 
 
-        #region Photon Callbacks
+        #region MonoBehaviour Callbacks
+
+
+        private void Update()
+        {
+            if (playerPrefab == null)
+            {
+                Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab " +
+                    "Reference. Please set it up in GameObject 'Game Manager'", this);
+            }
+            else
+            {
+                if (!playerHasSpawned && PlayerManager.LocalPlayerInstance == null)
+                {
+                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}",
+                        SceneManager.GetActiveScene().name);
+
+                    Spawn spawn = GetAvailableSpawn();
+
+                    if (spawn == null)
+                        Debug.Log("Spawn not available");
+                    else
+                    {
+                        // We're in a room. spawn a character for the local player.
+                        // It gets synced by using PhotonNetwork.Instantiate
+                        PhotonNetwork.Instantiate(
+                            "Prefabs/" + playerPrefab.name,
+                            spawn.transform.position,
+                            Quaternion.identity,
+                            0);
+
+
+                        spawn.SetIsAvailable(false);
+                        playerHasSpawned = true;
+                    }
+                }
+            }
+        }
+
+
+        #endregion
+
+
+        #region MonoBehaviourPunCallbacks Callbacks
 
 
         /// <summary>
@@ -31,6 +74,39 @@ namespace Com.TankWarfareOnline
         public override void OnLeftRoom()
         {
             SceneManager.LoadScene(0);
+        }
+
+
+        public override void OnPlayerEnteredRoom(Player other)
+        {
+            // Not seen if you're the player connecting
+            Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName);
+
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                // Called before OnPlayerLeftRoom
+                Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}",
+                    PhotonNetwork.IsMasterClient);
+
+                LoadArena();
+            }
+        }
+
+
+        public override void OnPlayerLeftRoom(Player other)
+        {
+            // Seen when other disconnects
+            Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName);
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                // Called before OnPlayerLeftRoom
+                Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}",
+                    PhotonNetwork.IsMasterClient);
+
+                LoadArena();
+            }
         }
 
 
@@ -112,42 +188,6 @@ namespace Com.TankWarfareOnline
             return null;
         }
 
-        private void Update()
-        {
-            if (playerPrefab == null)
-            {
-                Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab " +
-                    "Reference. Please set it up in GameObject 'Game Manager'", this);
-            }
-            else
-            {
-                if (!playerHasSpawned && PlayerManager.LocalPlayerInstance == null)
-                {
-                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}",
-                        SceneManager.GetActiveScene().name);
-
-                    Spawn spawn = GetAvailableSpawn();
-
-                    if (spawn == null)
-                        Debug.Log("Spawn not available");
-                    else
-                    {
-                        // We're in a room. spawn a character for the local player.
-                        // It gets synced by using PhotonNetwork.Instantiate
-                        PhotonNetwork.Instantiate(
-                            "Prefabs/" + playerPrefab.name,
-                            spawn.transform.position,
-                            Quaternion.identity,
-                            0);
-
-
-                        spawn.SetIsAvailable(false);
-                        playerHasSpawned = true;
-                    }
-                }
-            }
-        }
-
         void LoadArena()
         {
             if (!PhotonNetwork.IsMasterClient)
@@ -158,45 +198,6 @@ namespace Com.TankWarfareOnline
 
             Debug.Log("PhotonNetwork : Loading Level");
             PhotonNetwork.LoadLevel("Game");
-        }
-
-
-        #endregion
-
-
-        #region Photon Callbacks
-
-
-        public override void OnPlayerEnteredRoom(Player other)
-        {
-            // Not seen if you're the player connecting
-            Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); 
-
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                // Called before OnPlayerLeftRoom
-                Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}",
-                    PhotonNetwork.IsMasterClient);
-
-                LoadArena();
-            }
-        }
-
-
-        public override void OnPlayerLeftRoom(Player other)
-        {
-            // Seen when other disconnects
-            Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); 
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                // Called before OnPlayerLeftRoom
-                Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}",
-                    PhotonNetwork.IsMasterClient);
-
-                LoadArena();
-            }
         }
 
 

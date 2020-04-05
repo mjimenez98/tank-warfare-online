@@ -20,7 +20,7 @@ namespace Com.TankWarfareOnline
         #endregion
 
 
-        #region Private Methods
+        #region MonoBehaviour Callbacks
 
 
         // Update is called once per frame
@@ -42,6 +42,13 @@ namespace Com.TankWarfareOnline
             }
         }
 
+
+        #endregion
+
+
+        #region RPCs
+
+
         [PunRPC]
         void PlayCannonSFX()
         {
@@ -52,6 +59,8 @@ namespace Com.TankWarfareOnline
 
 
         #endregion
+
+
     }
 
 }
