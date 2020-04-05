@@ -88,6 +88,7 @@ namespace Com.TankWarfareOnline
             if (!photonView.IsMine)
                 return;
 
+            // Power-ups
             if (collision.gameObject.name.Contains("Lightweight"))
             {
                 Debug.Log(gameObject.name + " has acquired Lightweight");
@@ -98,7 +99,20 @@ namespace Com.TankWarfareOnline
             }
             else if (collision.gameObject.name.Contains("Invincibility"))
             {
+                Debug.Log(gameObject.name + " has acquired Invincibility");
 
+                powerupInPossession = PlayerPowerups.Invincibility;
+                powerupTimer = Invincibility.GetTimer();
+            }
+
+            if (collision.gameObject.name.Contains("Bullet"))
+            {
+                if (powerupInPossession != PlayerPowerups.Invincibility)
+                {
+                    Debug.Log(gameObject.name + " has died");
+
+                    PhotonNetwork.Destroy(this.gameObject);
+                }
             }
         }
 

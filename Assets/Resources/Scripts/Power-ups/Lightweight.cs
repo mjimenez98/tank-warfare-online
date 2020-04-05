@@ -8,8 +8,8 @@ namespace Com.TankWarfareOnline
     {
         #region Properties
 
-        private static float timer = 5.0f;
-        private static float speedMultiplier = 3.0f;
+        private readonly static float timer = 10.0f;
+        private readonly static float speedMultiplier = 3.0f;
 
 
         #endregion

@@ -12,6 +12,7 @@ namespace Com.TankWarfareOnline
         #region Properties
 
 
+        // Prefabs
         public GameObject playerPrefab;
         public GameObject powerUpLightweightPrefab;
         public GameObject powerUpInvincibilityPrefab;
