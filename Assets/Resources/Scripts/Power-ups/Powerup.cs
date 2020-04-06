@@ -18,19 +18,6 @@ namespace Com.TankWarfareOnline
             DontDestroyOnLoad(this.gameObject);
         }
 
-        protected void OnCollisionEnter(Collision collision)
-        {
-            if (!photonView.IsMine)
-                return;
-
-            if (collision.gameObject.GetComponentInParent<PlayerManager>() != null)
-            {
-                Debug.Log("Collision with Player. Destroying Power-up");
-
-                PhotonNetwork.Destroy(this.gameObject);
-            }
-        }
-
 
         #endregion
     }

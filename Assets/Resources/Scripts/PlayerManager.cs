@@ -26,6 +26,8 @@ namespace Com.TankWarfareOnline
         [Tooltip("Indicates for how longer the power-up will be active")]
         private float powerupTimer = 0.0f;
 
+        public ParticleSystem powerupParticles;
+
 
         #endregion
 
@@ -65,6 +67,8 @@ namespace Com.TankWarfareOnline
                     powerupInPossession = PlayerPowerups.None;
                     speedMultiplier = 1.0f;
                     powerupTimer = 0.0f;
+
+                    powerupParticles.Stop();
                 }
             }
 
@@ -93,16 +97,43 @@ namespace Com.TankWarfareOnline
             {
                 Debug.Log(gameObject.name + " has acquired Lightweight");
 
+                // Set values according to the power-up acquired
                 powerupInPossession = PlayerPowerups.Lightweight;
                 speedMultiplier = Lightweight.GetSpeedMultiplier();
                 powerupTimer = Lightweight.GetTimer();
+
+                // Get power-up from collision
+                Lightweight lightweight = collision.gameObject.GetComponent<Lightweight>();
+
+                // Get color from power-up
+                ParticleSystem.MainModule main = powerupParticles.main;
+                main.startColor = lightweight.GetColor();
+
+                // Destroy power-up
+                lightweight.PhotonNetworkDestroy();
+
+                // Play particle effect to demonstrate player has acquired a power-up
+                powerupParticles.Play();
             }
             else if (collision.gameObject.name.Contains("Invincibility"))
             {
                 Debug.Log(gameObject.name + " has acquired Invincibility");
 
+                // Set values according to the power-up acquired
                 powerupInPossession = PlayerPowerups.Invincibility;
                 powerupTimer = Invincibility.GetTimer();
+
+                // Get power-up from collision
+                Invincibility invincibility = collision.gameObject.GetComponent<Invincibility>();
+
+                ParticleSystem.MainModule main = powerupParticles.main;
+                main.startColor = invincibility.GetColor();
+
+                // Destroy power-up
+                invincibility.PhotonNetworkDestroy();
+
+                // Play particle effect to demonstrate player has acquired a power-up
+                powerupParticles.Play();
             }
 
             if (collision.gameObject.name.Contains("Bullet"))

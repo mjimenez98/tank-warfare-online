@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace Com.TankWarfareOnline
 {
@@ -10,6 +11,8 @@ namespace Com.TankWarfareOnline
 
         private readonly static float timer = 10.0f;
         private readonly static float speedMultiplier = 3.0f;
+
+        public Material material;
 
 
         #endregion
@@ -23,9 +26,21 @@ namespace Com.TankWarfareOnline
             base.Awake();
         }
 
-        private new void OnCollisionEnter(Collision collision)
+
+        #endregion
+
+
+        #region Public Methods
+
+
+        public Color GetColor()
         {
-            base.OnCollisionEnter(collision);
+            return material.color;
+        }
+
+        public void PhotonNetworkDestroy()
+        {
+            photonView.RPC("Destroy", RpcTarget.All);
         }
 
 
@@ -43,6 +58,22 @@ namespace Com.TankWarfareOnline
         public static float GetTimer()
         {
             return timer;
+        }
+
+
+        #endregion
+
+
+        #region RPCs
+
+
+        [PunRPC]
+        void Destroy()
+        {
+            if (!photonView.IsMine)
+                return;
+
+            PhotonNetwork.Destroy(this.gameObject);
         }
 
 
