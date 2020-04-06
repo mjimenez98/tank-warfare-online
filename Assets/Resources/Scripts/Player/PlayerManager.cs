@@ -17,6 +17,8 @@ namespace Com.TankWarfareOnline
         public float speed;
         public float rotationSpeed;
 
+        private float speedMultiplier = 1.0f;
+
 
         #endregion
 
@@ -48,14 +50,28 @@ namespace Com.TankWarfareOnline
             // Get the horizontal and vertical axis.
             // By default they are mapped to the arrow keys.
             // The value is in the range -1 to 1
-            float translationZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-            float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+            float translationZ = Input.GetAxis("Vertical") * speed * speedMultiplier *
+                Time.deltaTime;
+            float rotation = Input.GetAxis("Horizontal") * rotationSpeed * speedMultiplier *
+                Time.deltaTime;
 
             // Move translation along the object's z-axis
             transform.Translate(0, 0, translationZ);
 
             // Rotate around our y-axis
             transform.Rotate(0, rotation, 0);
+        }
+
+
+        #endregion
+
+
+        #region Public Methods
+
+
+        public void SetSpeedMultiplier(float speed)
+        {
+            speedMultiplier = speed;
         }
 
 
