@@ -68,7 +68,7 @@ namespace Com.TankWarfareOnline
                     speedMultiplier = 1.0f;
                     powerupTimer = 0.0f;
 
-                    powerupParticles.Stop();
+                    photonView.RPC("DeactivatePowerupParticles", RpcTarget.AllBuffered);
                 }
             }
 
@@ -104,16 +104,17 @@ namespace Com.TankWarfareOnline
 
                 // Get power-up from collision
                 Lightweight lightweight = collision.gameObject.GetComponent<Lightweight>();
+                Color lightweightColor = lightweight.GetColor();
 
-                // Get color from power-up
-                ParticleSystem.MainModule main = powerupParticles.main;
-                main.startColor = lightweight.GetColor();
+                // Play particle effect to demonstrate player has acquired a power-up
+                photonView.RPC("ActivatePowerupParticles", RpcTarget.AllBuffered,
+                    lightweightColor.r,
+                    lightweightColor.g,
+                    lightweightColor.b,
+                    lightweightColor.g);
 
                 // Destroy power-up
                 lightweight.PhotonNetworkDestroy();
-
-                // Play particle effect to demonstrate player has acquired a power-up
-                powerupParticles.Play();
             }
             else if (collision.gameObject.name.Contains("Invincibility"))
             {
@@ -126,14 +127,15 @@ namespace Com.TankWarfareOnline
                 // Get power-up from collision
                 Invincibility invincibility = collision.gameObject.GetComponent<Invincibility>();
 
-                ParticleSystem.MainModule main = powerupParticles.main;
-                main.startColor = invincibility.GetColor();
+                // Play particle effect to demonstrate player has acquired a power-up
+                photonView.RPC("ActivatePowerupParticles", RpcTarget.All,
+                    invincibility.GetColor().r,
+                    invincibility.GetColor().g,
+                    invincibility.GetColor().b,
+                    invincibility.GetColor().a);
 
                 // Destroy power-up
                 invincibility.PhotonNetworkDestroy();
-
-                // Play particle effect to demonstrate player has acquired a power-up
-                powerupParticles.Play();
             }
 
             if (collision.gameObject.name.Contains("Bullet"))
@@ -145,6 +147,28 @@ namespace Com.TankWarfareOnline
                     PhotonNetwork.Destroy(this.gameObject);
                 }
             }
+        }
+
+
+        #endregion
+
+
+        #region RPCs
+
+
+        [PunRPC]
+        void ActivatePowerupParticles(float r, float g, float b, float a)
+        {
+            ParticleSystem.MainModule main = powerupParticles.main;
+            main.startColor = new Color(r, g, b, a);
+
+            powerupParticles.Play();
+        }
+
+        [PunRPC]
+        void DeactivatePowerupParticles()
+        {
+            powerupParticles.Stop();
         }
 
 
