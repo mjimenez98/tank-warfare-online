@@ -18,6 +18,7 @@ namespace Com.TankWarfareOnline
         public GameObject powerUpInvincibilityPrefab;
         public GameObject spawnPrefab;
         public GameObject wallPrefab;
+        public GameObject zombiePrefab;
 
         private bool playerHasSpawned;
 
@@ -141,10 +142,30 @@ namespace Com.TankWarfareOnline
                 {
                     CreateWalls();
 
+                    CreateZombies();
+
                     CreatePowerUps();
 
                     CreateSpawns();
                 }
+            }
+        }
+
+        private void CreateZombies()
+        {
+            Debug.Log("Creating Zombies");
+
+            ZombieManager[] zombies = Resources.FindObjectsOfTypeAll(typeof(ZombieManager)) as ZombieManager[];
+
+            foreach (ZombieManager zombie in zombies)
+            {
+                if (zombie.transform.position == new Vector3(0.0f, 0.0f, 0.0f))
+                    continue;
+
+                PhotonNetwork.InstantiateSceneObject(
+                    "Prefabs/" + zombiePrefab.name,
+                    zombie.transform.localPosition,
+                    zombie.transform.rotation);
             }
         }
 
