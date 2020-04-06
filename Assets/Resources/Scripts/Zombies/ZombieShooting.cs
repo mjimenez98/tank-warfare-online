@@ -17,6 +17,8 @@ namespace Com.TankWarfareOnline
         public GameObject cylinder;
         public ZombieManager zombieManager;
 
+        public AudioSource cannonSFX;
+
         private float cooldownTimer = 0.0f;
 
 
@@ -33,10 +35,10 @@ namespace Com.TankWarfareOnline
 
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward),
+            if (Physics.Raycast(cylinder.transform.position, transform.TransformDirection(Vector3.forward),
                 out hit, Mathf.Infinity))
             {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
+                Debug.DrawRay(cylinder.transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
 
                 if (hit.collider.gameObject.tag.Contains("Player"))
                 {
@@ -74,6 +76,7 @@ namespace Com.TankWarfareOnline
                     cylinder.transform.position,
                     transform.rotation);
 
+                photonView.RPC("PlayCannonSFX", RpcTarget.All);
 
                 cooldownTimer = shootingCooldown;
                 movingCooldown = 2.0f;
@@ -82,6 +85,21 @@ namespace Com.TankWarfareOnline
             {
                 cooldownTimer -= Time.deltaTime;
             }
+        }
+
+
+        #endregion
+
+
+        #region RPCs
+
+
+        [PunRPC]
+        void PlayCannonSFX()
+        {
+            Debug.Log("Playing cannon shot SFX");
+
+            cannonSFX.Play();
         }
 
 

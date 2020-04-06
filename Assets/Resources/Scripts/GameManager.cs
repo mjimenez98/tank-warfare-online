@@ -175,13 +175,13 @@ namespace Com.TankWarfareOnline
 
             PhotonNetwork.Instantiate(
                             "Prefabs/" + spawnPrefab.name,
-                            new Vector3(-40, 0, -40),
+                            new Vector3(-35, 0, -40),
                             Quaternion.identity,
                             0);
 
             PhotonNetwork.Instantiate(
                             "Prefabs/" + spawnPrefab.name,
-                            new Vector3(-40, 0, 40),
+                            new Vector3(-35, 0, 40),
                             Quaternion.identity,
                             0);
         }

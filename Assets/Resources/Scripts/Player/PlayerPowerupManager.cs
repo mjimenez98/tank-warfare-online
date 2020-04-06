@@ -137,7 +137,6 @@ namespace Com.TankWarfareOnline
             powerupParticles.Stop();
         }
 
-
         #endregion
     }
 }
