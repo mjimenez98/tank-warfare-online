@@ -28,7 +28,7 @@ namespace Com.TankWarfareOnline
             r.velocity = transform.forward * speed;
 
             // Reactivate collider
-            Invoke("ActivateCollider", 1);
+            Invoke("ActivateCollider", 0.5f);
         }
 
         private void ActivateCollider()

@@ -43,6 +43,14 @@ namespace Com.TankWarfareOnline
         #region MonoBehaviour Callbacks
 
 
+        void Awake()
+        {
+            if (!photonView.IsMine)
+                return;
+
+            DontDestroyOnLoad(this.gameObject);
+        }
+
         private void FixedUpdate()
         {
             if (!photonView.IsMine)
