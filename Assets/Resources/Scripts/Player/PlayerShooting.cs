@@ -5,7 +5,7 @@ using Photon.Pun;
 
 namespace Com.TankWarfareOnline
 {
-    public class Shooting : MonoBehaviourPunCallbacks
+    public class PlayerShooting : MonoBehaviourPunCallbacks
     {
         #region Properties
 
