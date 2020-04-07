@@ -27,8 +27,24 @@ namespace Com.TankWarfareOnline
             {
                 Debug.Log("Destroying wall");
 
-                PhotonNetwork.Destroy(this.gameObject);
+                photonView.RPC("Destroy", RpcTarget.All);
             }
+        }
+
+
+        #endregion
+
+
+        #region RPCs
+
+
+        [PunRPC]
+        void Destroy()
+        {
+            if (!photonView.IsMine)
+                return;
+
+            PhotonNetwork.Destroy(this.gameObject);
         }
 
 
