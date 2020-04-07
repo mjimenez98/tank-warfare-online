@@ -140,10 +140,8 @@ namespace Com.TankWarfareOnline
         [PunRPC]
         void Destroy()
         {
-            if (!photonView.IsMine)
-                return;
-
-            PhotonNetwork.Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
+            //PhotonNetwork.Destroy(this.gameObject);
         }
 
         #endregion
