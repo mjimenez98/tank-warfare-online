@@ -221,7 +221,7 @@ Transform:
   m_Children:
   - {fileID: 1755948686420170243}
   - {fileID: 1755948684826783339}
-  - {fileID: 1508318720066655269}
+  - {fileID: 6602121377631362932}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81addf6a93e7a49eaa0d3b9a22dc03c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerupParticles: {fileID: 159283781804363430}
+  powerupParticles: {fileID: 6602121377631362234}
 --- !u!114 &-7464107690462371280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,13 +481,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 736dba39228a641449c86b51bd9d69ac, type: 3}
---- !u!4 &1508318720066655269 stripped
+--- !u!4 &6602121377631362932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5724617785709940280, guid: 736dba39228a641449c86b51bd9d69ac,
     type: 3}
   m_PrefabInstance: {fileID: 6602121377631361565}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &159283781804363430 stripped
+--- !u!198 &6602121377631362234 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6461136768930731195, guid: 736dba39228a641449c86b51bd9d69ac,
     type: 3}

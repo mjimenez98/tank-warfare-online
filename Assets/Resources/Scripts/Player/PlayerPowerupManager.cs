@@ -110,7 +110,7 @@ namespace Com.TankWarfareOnline
                 {
                     Debug.Log(gameObject.name + " has died");
 
-                    PhotonNetwork.Destroy(this.gameObject);
+                    photonView.RPC("Destroy", RpcTarget.All);
                 }
             }
         }
@@ -135,6 +135,15 @@ namespace Com.TankWarfareOnline
         void DeactivatePowerupParticles()
         {
             powerupParticles.Stop();
+        }
+
+        [PunRPC]
+        void Destroy()
+        {
+            if (!photonView.IsMine)
+                return;
+
+            PhotonNetwork.Destroy(this.gameObject);
         }
 
         #endregion
